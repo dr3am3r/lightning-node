@@ -1,0 +1,32 @@
+{
+  "name": "lightning-node",
+  "version": "1.0.0",
+  "description": "btc lightning node",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dr3am3r/lightning-node.git"
+  },
+  "keywords": [
+    "btc",
+    "lightning",
+    "node"
+  ],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dr3am3r/lightning-node/issues"
+  },
+  "homepage": "https://github.com/dr3am3r/lightning-node#readme",
+  "devDependencies": {
+    "nodemon": "1.18.7"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "restana": "^2.3.3"
+  }
+}
