@@ -1,15 +1,29 @@
+// TODO: temp in-memory solution
 const USERS = []
 
-module.exports = {
-  createUser
+/**
+ * @name createUser
+ * req.body = { partnerId, accounttype }
+ */
+function createUser(req, res) {
+  console.log('create user ', req)
+  const { partnerId, accounttype } = req.body
+  const nextUser = {
+    login: 'aaaa' + Math.random(),
+    password: 'bbbb',
+    partnerId,
+    accounttype
+  }
+  USERS.push(nextUser)
+  console.log('all users ', USERS)
+  res.send({ login: nextUser.login, password: nextUser.password })
 }
 
-async function createUser(params) {
-  console.log('create user ', params)
-    const nextUser = {
-      login: 'aaaa' + Math.random(),
-      password: 'bbbb'
-    }
-    USERS.push(nextUser)
-    return nextUser
+function getUsers () {
+  return USERS
+}
+
+module.exports = {
+  createUser,
+  getUsers
 }

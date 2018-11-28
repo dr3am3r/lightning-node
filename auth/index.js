@@ -9,6 +9,7 @@ module.exports = async (req, res) => {
 }
 
 async function auth (req, res) {
+  console.log('@@@@ auth ', req)
   res.send({
     "access_token": "sfsdfsdfsdfdsf",
     "token_type": "ffff",
