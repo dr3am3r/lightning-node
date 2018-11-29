@@ -22,6 +22,7 @@ service.use((req, res, next) => {
 
 // json bodyparser
 service.use(bodyParser.json())
+service.use(bodyParser.urlencoded({ extended: true }))
 
 // auth middleware setup
 setupAuth(service)
