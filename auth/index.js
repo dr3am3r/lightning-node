@@ -3,11 +3,12 @@ const randtoken = require('rand-token')
 const moment = require('moment')
 const { getUsers } = require('../user')
 
+const SECRET = 'o la la'
 const REFRESH_TOKENS = {}
 const TOKEN_EXPIRATION_MINUTES = 300
 
 module.exports = async (req, res) => {
-  const { type } = req.query
+  const { type = 'auth' } = req.query || {}
   switch (type) {
     case 'auth': return await auth(req, res)
     case 'refresh_token': return await refresh(req, res)
@@ -15,21 +16,30 @@ module.exports = async (req, res) => {
   }
 }
 
-async function auth (req, res) {
+async function auth (req, res, next) {
   console.log('@@@@ auth ', req.body)
-  // for testing purposes only pass is used to check
-  const users = getUsers()
-  const user = users.find(u => u.password === req.body.password)
-  if (true) {
-    let token = jwt.sign(user, SECRET, { expiresIn: TOKEN_EXPIRATION_MINUTES }) 
-    let refreshToken = randtoken.uid(256)
-    REFRESH_TOKENS[refreshToken] = user
-    res.send({
-      "access_token": token,
-      "token_type": "jwt",
-      "refresh_token": refreshToken,
-      "expiry": moment.minutes(TOKEN_EXPIRATION_MINUTES).utc()//moment().minutes(300).toISOString()
-    })
+  try {
+    //for testing purposes only pass is used to check
+    const users = getUsers()
+    const user = users.find(u => u.password === req.body.password) || { login: 'aaa', password: 'bbbb', accounttype: 'test'}
+    if (user) {
+      let token = jwt.sign(user, SECRET, { expiresIn: TOKEN_EXPIRATION_MINUTES }) 
+      let refreshToken = randtoken.uid(256)
+      REFRESH_TOKENS[refreshToken] = user
+      res.send({
+        "access_token": token,
+        "token_type": "jwt",
+        "refresh_token": refreshToken,
+        "expiry": moment().minutes(TOKEN_EXPIRATION_MINUTES).utc()//moment().minutes(300).toISOString()
+      })
+    } else {
+      res.send({
+        "error": true
+      })
+    }
+  } catch (err) {
+    console.log('uncaught in auth : ', err)
+    next(err)
   }
 }
 

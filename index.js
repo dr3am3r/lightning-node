@@ -4,6 +4,7 @@ const passport = require('passport')
 const userHandlers = require('./user')
 const authHandler = require('./auth')
 const setupAuth = require('./auth/init')
+//const { errorMiddleware } = require('./log/error-middleware')
 
 const service = restana({
   ignoreTrailingSlash: true
@@ -28,14 +29,17 @@ service.use(bodyParser.urlencoded({ extended: true }))
 setupAuth(service)
 
 service.post('/create', userHandlers.createUser)
+service.post('/auth', authHandler)
 
-service.post('/auth', passport.authenticate('local'), authHandler)
-
-service.get('/getbtc', /*passport.isAuthenticated(),*/ async (req, res) => {
+service.get('/getbtc', passport.authenticate('jwt'), async (req, res) => {
   res.send({
+    ok: true,
     address: '387ah9XvMLSEVeRFwNyGCDT77evExw2PWG'
   })
 })
+
+// TODO: the last but not least
+//service.use(errorMiddleware)
 
 // start the server
 service

@@ -7,8 +7,8 @@ const USERS = []
  * @name createUser
  * req.body = { partnerId, accounttype }
  */
-function createUser(req, res) {
-  console.log('create user ', req)
+async function createUser(req, res) {
+  console.log('@@@ create user ', req.body)
   const { partnerId, accounttype } = req.body
   const nextUser = {
     id: uuidv4(),
